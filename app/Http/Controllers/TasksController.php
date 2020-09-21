@@ -8,24 +8,35 @@ use Illuminate\Queue\RedisQueue;
 
 class TasksController extends Controller
 {
-    public function getTasks(): array {
-        return Task::all();
+
+    public function getTasks(): object {
+        return Task::select('title', 'isDone', 'created_at as created')->get();
     }
 
     public function createTask(Request $request): void {
         $task = new Task;
 
+        /*$request->validate([
+            'title' => 'required',
+        ]);*/
+
         $task->title = $request->title;
-        $task->isDone = $request->isDone;
+        $task->isDone = $request->isDone ?: 0;
 
         $task->save();
     }
 
     public function updateTask(Request $request): void {
-        $task = Task::find($request->id);
+        /*$request->validate([
+            'title' => 'required',
+            'isDone' => 'required',
+        ]);*/
+
+        $task = Task::where($request->title);
 
         $task->isDone = $request->isDone;
 
         $task->save();
     }
+
 }
