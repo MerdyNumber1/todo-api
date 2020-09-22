@@ -32,11 +32,21 @@ class TasksController extends Controller
             'isDone' => 'required',
         ]);*/
 
-        $task = Task::where($request->title);
+        $task = Task::where(['title' => $request->title])->first();
 
-        $task->isDone = $request->isDone;
+        $task->isDone = $request->isDone ?: 0;
 
         $task->save();
     }
 
+    public function deleteTask(Request $request): void {
+        /*$request->validate([
+            'title' => 'required',
+            'isDone' => 'required',
+        ]);*/
+
+        $task = Task::where(['title' => $request->title])->first();
+
+        $task->delete();
+    }
 }

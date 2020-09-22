@@ -18,5 +18,6 @@ Route::group([
 ], function() {
     Route::get('/', [TasksController::class, 'getTasks']);
     Route::post('/', [TasksController::class, 'createTask']);
-    Route::put('/{id}', [TasksController::class, 'updateTask']);
+    Route::put('/{title}', [TasksController::class, 'updateTask']);
+    Route::delete('/{title}', [TasksController::class, 'deleteTask']);
 });
