@@ -9,16 +9,21 @@ use Illuminate\Queue\RedisQueue;
 class TasksController extends Controller
 {
 
-    public function getTasks(): object {
+    public function getTasks(Request $request): object {
+        if($request->completed) {
+            return Task::select('title', 'isDone', 'created_at as created')
+                ->where(['isDone' => '1'])
+                ->get();
+        }
         return Task::select('title', 'isDone', 'created_at as created')->get();
     }
 
     public function createTask(Request $request): void {
         $task = new Task;
 
-        /*$request->validate([
+        $request->validate([
             'title' => 'required',
-        ]);*/
+        ]);
 
         $task->title = $request->title;
         $task->isDone = $request->isDone ?: 0;
@@ -26,11 +31,7 @@ class TasksController extends Controller
         $task->save();
     }
 
-    public function updateTask(Request $request): void {
-        /*$request->validate([
-            'title' => 'required',
-            'isDone' => 'required',
-        ]);*/
+    public function updateTask(Request $request): void { 
 
         $task = Task::where(['title' => $request->title])->first();
 
@@ -40,10 +41,9 @@ class TasksController extends Controller
     }
 
     public function deleteTask(Request $request): void {
-        /*$request->validate([
+        $request->validate([
             'title' => 'required',
-            'isDone' => 'required',
-        ]);*/
+        ]);
 
         $task = Task::where(['title' => $request->title])->first();
 
