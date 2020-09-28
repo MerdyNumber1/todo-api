@@ -1,0 +1,23 @@
+version: "2"
+
+
+services:
+    app:
+        volumes:
+            - "./app/:/app"
+        working_dir: /app
+        command: "php artisan serve --host=0.0.0.0 --port=8000"
+        ports:
+            - 8000:8000
+        build:
+            context: images/php
+            dockerfile: Dockerfile
+    db:
+        image: mariadb
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+            MYSQL_DATABASE: ${DB_DATABASE}
+        ports:
+            - 3306:3306
+        volumes:
+            - ./database/:/var/lib/mysql

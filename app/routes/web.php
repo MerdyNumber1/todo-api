@@ -13,6 +13,10 @@ use App\Http\Controllers\TasksController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function() {
+    return 'All is ok!';
+});
+
 Route::group([
     'prefix' => 'api/tasks',
 ], function() {
